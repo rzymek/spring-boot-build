@@ -5,10 +5,11 @@ versions=$(curl https://repo1.maven.org/maven2/org/springframework/boot/spring-b
     grep '/$' | tr -d / |\
     grep '^2' \
 )
+prefix=rzymek/spring-boot-build
 for SPRING in $versions; do
     echo $SPRING
-    docker build --tag rzymek/spring-boot-build:$SPRING --build-arg SPRING=$SPRING .
+    docker pull $prefix:$SPRING || docker build --tag $prefix:$SPRING --build-arg SPRING=$SPRING .
 done
 for SPRING in $versions; do
-    docker push rzymek/spring-boot-build:$SPRING
+    docker push $prefix:$SPRING
 done
